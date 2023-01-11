@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block body %}
+<form action="" class="flex flex-col bg-red-700 ml-10 mr-10 mt-2 mb-2"  method="post">
+    {{form.csrf_token}}
+    {{ form.fname.label(class='text-center')}}
+    {{ form.fname(class = 'bg-gray-300 ')}}
+    {{ form.lname.label(class='text-center')}}
+    {{ form.lname(class = 'bg-gray-300')}}
+    {{ form.email.label(class='text-center')}}
+    {{ form.email(class = 'bg-gray-300')}}
+    {{ form.username.label(class='text-center')}}
+    {{ form.username(class = 'bg-gray-300')}}
+    {{ form.password.label(class='text-center')}}
+    {{ form.password(class = 'bg-gray-300')}}
+    {{ form.confirm_password.label(class='text-center')}}
+    {{ form.confirm_password(class = 'bg-gray-300')}}
+    {{ form.submit(class = 'bg-gray-300')}}
+
+</form>
+{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
