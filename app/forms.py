@@ -23,3 +23,13 @@ class CreateAddress(FlaskForm):
     phone_number = StringField('phone_number',validators=[InputRequired()])
     address = StringField('address',validators=[InputRequired()])
     submit = SubmitField()
+
+class EditAddress(FlaskForm):
+    first_name= StringField('first_name')
+    last_name= StringField('last_name')
+    phone_number = StringField('phone_number')
+    address = StringField('address')
+    submit = SubmitField()
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField()

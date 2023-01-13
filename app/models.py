@@ -43,3 +43,6 @@ class Address(db.Model):
         super().__init__(**kwargs)
         db.session.add(self)
         db.session.commit()
+    def deleteaddress(self):
+        db.session.delete(self)
+        db.session.commit()

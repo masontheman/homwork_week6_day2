@@ -1,6 +1,6 @@
-from app import app, login_manager
+from app import app, login_manager, db
 from flask import render_template, redirect, url_for, flash
-from app.forms import SignInForm, LogIn, CreateAddress
+from app.forms import SignInForm, LogIn, CreateAddress,EditAddress,DeleteForm
 from app.models import User, Address
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -53,10 +53,51 @@ def createaddress():
         last_name = l, phone_number =p,
         address = a, user_id = current_user.id)
         flash('created the p#')
-        return redirect(url_for('HomePage'))
+        return redirect(url_for('profiles'))
     return render_template('createaddress.html',form = form)
+
+@app.route('/profile',methods=["GET", "POST"])
+@login_required
+def profiles():
+    # userposts = Address.get(user_id = current_user.id)
+    userposts = db.session.execute(db.select(Address).filter_by(user_id=current_user.id)).scalars()
+    return render_template('profile.html',userposts = userposts)
+
+@app.route('/profile/edit/<int:post_id>',methods=["GET", "POST"])
+@login_required
+def editaddress(post_id):
+    userposts = db.session.execute(db.select(Address).filter_by(id=post_id)).scalar_one()
+    form = EditAddress()
+    if form.validate_on_submit():
+        f = form.first_name.data
+        l = form.last_name.data
+        p = form.phone_number.data
+        a = form.address.data
+        if p:
+            userposts.phone_number = p
+            db.session.commit()
+        if a:
+            userposts.address = a
+            db.session.commit()
+        if f:
+            userposts.first_name = f
+            db.session.commit()
+        if l:
+            userposts.last_name = l
+            db.session.commit()
+        return redirect(url_for('profiles'))
+    return  render_template('editaddress.html', form = form)
+
 @login_manager.unauthorized_handler
 def unauthorized():
     # do stuff
     flash('sign in to create addrsses')
     return redirect(url_for('HomePage'))
+
+@app.route('/profile/delete/<int:post_id>',methods=["GET", "POST"])
+@login_required
+def deleteaddress(post_id):
+    userposts = db.session.execute(db.select(Address).filter_by(id=post_id)).scalar_one()
+    userposts.deleteaddress()
+    return redirect(url_for('profiles'))
+

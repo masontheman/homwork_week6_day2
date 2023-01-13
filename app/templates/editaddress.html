@@ -1,0 +1,16 @@
+{% block body %}
+<h1>Create an address:</h1>
+<form action="" class="flex flex-col bg-red-700 ml-10 mr-10 mt-2 mb-2"  method="post">
+    {{form.csrf_token}}
+    {{ form.first_name.label(class='text-center')}}
+    {{ form.first_name(class = 'bg-gray-300')}}
+    {{ form.last_name.label(class='text-center')}}
+    {{ form.last_name(class = 'bg-gray-300')}}
+    {{ form.phone_number.label(class='text-center')}}
+    {{ form.phone_number(class = 'bg-gray-300')}}
+    {{ form.address.label(class='text-center')}}
+    {{ form.address(class = 'bg-gray-300')}}
+    {{ form.submit(class = 'bg-gray-300')}}
+
+</form>
+{% endblock %}
