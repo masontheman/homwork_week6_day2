@@ -1,8 +1,9 @@
-from app import app 
+from app import app, login_manager
 from flask import render_template, redirect, url_for, flash
-from app.forms import SignInForm
-from app.models import User
-
+from app.forms import SignInForm, LogIn, CreateAddress
+from app.models import User, Address
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash
 @app.route('/')
 def HomePage():
     return (render_template('homepage.html'))
@@ -19,3 +20,43 @@ def SecondPage():
         flash('Sign in successful')
         return redirect(url_for('HomePage'))
     return (render_template('secondpage.html',form=form))
+
+@app.route('/login',methods=["GET", "POST"])
+def login():
+    form = LogIn()
+    if form.validate_on_submit():
+        username = form.username.data 
+        password = form.password.data
+        user = User.query.filter_by(username = username).first()
+        if user.check_password(password):
+            login_user(user)
+            flash('Log in successful')
+            return redirect(url_for('HomePage'))
+    return (render_template('login.html',form = form))
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('HomePage'))
+
+@app.route('/createaddress',methods=["GET", "POST"])
+@login_required
+def createaddress():
+    form = CreateAddress()
+    if form.validate_on_submit():
+        f = form.first_name.data
+        l = form.last_name.data
+        p = form.phone_number.data
+        a = form.address.data
+        newaddress = Address(first_name=f,
+        last_name = l, phone_number =p,
+        address = a, user_id = current_user.id)
+        flash('created the p#')
+        return redirect(url_for('HomePage'))
+    return render_template('createaddress.html',form = form)
+@login_manager.unauthorized_handler
+def unauthorized():
+    # do stuff
+    flash('sign in to create addrsses')
+    return redirect(url_for('HomePage'))

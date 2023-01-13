@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block body %}
+<h1>Log IN: </h1>
+<form action="" class="flex flex-col bg-red-700 ml-10 mr-10 mt-2 mb-2"  method="post">
+    {{form.csrf_token}}
+    {{ form.username.label(class='text-center')}}
+    {{ form.username(class = 'bg-gray-300')}}
+    {{ form.password.label(class='text-center')}}
+    {{ form.password(class = 'bg-gray-300')}}
+    {{ form.submit(class = 'bg-gray-300')}}
+
+</form>
+{% endblock %}

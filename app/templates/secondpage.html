@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block body %}
+<h1>SignUp</h1>
 <form action="" class="flex flex-col bg-red-700 ml-10 mr-10 mt-2 mb-2"  method="post">
     {{form.csrf_token}}
     {{ form.fname.label(class='text-center')}}
